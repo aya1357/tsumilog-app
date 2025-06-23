@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  mail:
+    image: schickling/mailcatcher:latest
+    ports:
+      - "1025:1025"
+      - "1080:1080"
+    profiles:
+      - dev
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    security_opt:
+      # Operation not permitted を抑制
+      - seccomp:unconfined
+    environment:
+      # 開発・テスト環境
+      MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD:-yes}
+      # 本番環境
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-}
+      MYSQL_USER: ${MYSQL_USER:-}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-}
+
+  app:
+    tty: true
+    stdin_open: true
+    build:
+      context: .
+      target: ${BUILD_TARGET:-development}
+    command: ${APP_COMMAND:-bin/rails server -b 0.0.0.0}
+    volumes:
+      - ${VOLUME_MOUNT:-.:/opt/app}
+      - app-bundle:/usr/local/bundle
+    ports:
+      - "3000:3000"
+      - "3030:3030"
+      - "3035:3035"
+    depends_on:
+      - db
+    environment:
+      TZ: Asia/Tokyo
+      DATABASE_URL: ${DATABASE_URL:-mysql2://root@db:3306}
+      RAILS_ENV: ${RAILS_ENV:-development}
+      RAILS_LOG_TO_STDOUT: true
+      DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY:-}
+      RAILS_SERVE_STATIC_FILES: ${RAILS_SERVE_STATIC_FILES:-}
+
+volumes:
+  db-data:
+  app-bundle:
