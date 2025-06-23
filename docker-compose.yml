@@ -20,13 +20,10 @@ services:
       # Operation not permitted を抑制
       - seccomp:unconfined
     environment:
-      # 開発・テスト環境
-      MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD:-yes}
-      # 本番環境
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-}
-      MYSQL_USER: ${MYSQL_USER:-}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-tsumilog_app_development}
+      MYSQL_USER: ${MYSQL_USER:-user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
 
   app:
     tty: true
@@ -46,7 +43,9 @@ services:
       - db
     environment:
       TZ: Asia/Tokyo
-      DATABASE_URL: ${DATABASE_URL:-mysql2://root@db:3306}
+      MYSQL_USER: ${MYSQL_USER:-user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-tsumilog_app_development}
       RAILS_ENV: ${RAILS_ENV:-development}
       RAILS_LOG_TO_STDOUT: true
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
