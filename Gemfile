@@ -51,17 +51,47 @@ group :development, :test do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
-  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
-  gem "rubocop-rails-omakase", require: false
+  # === RuboCop: 厳格なコーディング規約 ===
+  # 基本RuboCop
+  gem "rubocop", require: false
+  # Rails特有の規約
+  gem "rubocop-rails", require: false
+  # RSpec特有の規約
+  gem "rubocop-rspec", require: false
+  # パフォーマンス規約
+  gem "rubocop-performance", require: false
+
+  # === 高機能開発・テストツール ===
+  # テストデータ作成
+  gem "factory_bot_rails"
+  # BDDテストフレームワーク
+  gem "rspec-rails"
+  # Slimテンプレート構文チェック
+  gem "slim_lint", require: false
+  # N+1クエリ検出
+  gem "bullet"
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+
+  # === PR自動レビューツール ===
+  # PR自動レビュー
+  gem "danger"
+  # 管理
+  gem "danger-todoist"
+  # PR承認自動化
+  gem "danger-lgtm"
+  # RuboCop結果をPRにコメント
+  gem "danger-rubocop"
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+
+  # === テストカバレッジ測定 ===
+  gem "simplecov", require: false
 end
