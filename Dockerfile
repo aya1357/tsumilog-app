@@ -47,7 +47,7 @@ COPY . .
 # === Create symlinks for Rails commands (better than aliases) ===
 RUN ln -sf /opt/app/bin/rails /usr/local/bin/rails && \
     ln -sf /opt/app/bin/rake /usr/local/bin/rake && \
-    echo '#!/bin/bash\nexec /opt/app/bin/rspec "$@"' > /usr/local/bin/rspec && \
+    echo '#!/bin/bash\nexec bundle exec rspec "$@"' > /usr/local/bin/rspec && \
     chmod +x /usr/local/bin/rspec && \
     echo '#!/bin/bash\nexec bundle exec rubocop "$@"' > /usr/local/bin/rubocop && \
     chmod +x /usr/local/bin/rubocop && \
