@@ -31,6 +31,9 @@ gem "thruster", require: false
 # Windowsタイムゾーンデータ
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
+# データベーススキーマ管理
+gem "ridgepole"
+
 group :development, :test do
   # セキュリティ脆弱性静的解析
   gem "brakeman", require: false
