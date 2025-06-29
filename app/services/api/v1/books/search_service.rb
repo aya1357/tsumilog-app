@@ -24,12 +24,14 @@ class Api::V1::Books::SearchService < BaseService
 
     # キャッシュから取得、なければAPI検索
     cache_key = "book_search:#{@query}:#{@limit}"
+    cache_hit = true
     @books = Rails.cache.fetch cache_key, expires_in: CACHE_EXPIRES_IN do
+      cache_hit = false
       Rails.logger.info "Cache miss for query: #{@query}"
       search_all_apis
     end
     if @books.any?
-      Rails.logger.info "Cache hit for query: #{@query}" if Rails.cache.exist? cache_key
+      Rails.logger.info "Cache hit for query: #{@query}" if cache_hit
       true
     else
       @message = '書籍が見つかりませんでした。'
