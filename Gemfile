@@ -31,6 +31,11 @@ gem "thruster", require: false
 # Windowsタイムゾーンデータ
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
+# 外部API通信
+gem "faraday", "~> 2.0"
+gem "faraday-retry", "~> 2.0"
+# XML解析
+gem "nokogiri"
 # データベーススキーマ管理
 gem "ridgepole"
 
